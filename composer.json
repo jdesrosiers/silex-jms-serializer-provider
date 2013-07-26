@@ -1,0 +1,25 @@
+{
+    "name": "jdesrosiers/silex-jms-serializer-provider",
+    "description": "A silex service provider that integrates jms/serializer into silex",
+    "keywords": ["silex", "service", "provider", "ServiceProvider", "jms", "serializer", "JmsSerializer", "Johannes Schmitt", "schmittjoh", "Jason Desrosiers", "jdesrosiers"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Desrosiers",
+            "email": "jdesrosi@gmail.com"
+        }
+    ],
+    "require": {
+        "silex/silex": "~1.0",
+        "jms/serializer": "~0.11"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "JDesrosiers": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
