@@ -18,23 +18,25 @@ Install the silex-jms-serializer-provider using [composer](http://getcomposer.or
 
 Parameters
 ----------
-* **serializer.srcDir**:
-* **serializer.builder**:
-* **serializer.annotationReader**:
-* **serializer.cacheDir**:
-* **serializer.configureHandlers**:
-* **serializer.configureListeners**:
-* **serializer.objectConstructor**:
-* **serializer.namingStrategy**:
-* **serializer.namingStrategy.separator**:
-* **serializer.namingStrategy.lowerCase**:
-* **serializer.includeInterfaceMetadata**:
-* **serializer.metadataDirs**:
+* **serializer.srcDir**: (string) The path to the jms/serializer component.
+* **serializer.annotationReader**: (AnnotationReader) Set a custom AnnotationReader.
+* **serializer.cacheDir**: (string) Set a directory for caching annotations.
+* **serializer.configureHandlers**: (Closure) Customize handlers.
+* **serializer.configureListeners**: (Closure) Customize listeners.
+* **serializer.objectConstructor**: (ObjectConstructorInterface) Set a custom ObjectConstructor.
+* **serializer.namingStrategy**: (string) Set the PropertyNamingStrategy
+* **serializer.namingStrategy.separator**: (string) If CamelCase is chosen as the NamingStrategy, you can override the default separator.
+* **serializer.namingStrategy.lowerCase**: (boolean) If CamelCase is chosen as the NamingStrategy, you can override the lowerCase option.
+* **serializer.serializationVisitors**: (array<string:VisitorInterface>) Override the default serialization visitors.
+* **serializer.deserializationVisitors**: (array<string:VisitorInterface>) Override the default deserialization visitors.
+* **serializer.includeInterfaceMetadata**: (boolean) Whether to include the metadata from the interfaces
+* **serializer.metadataDirs**: (array<string:string>) Sets a map of namespace prefixes to directories.
 
 Services
 --------
-* **serializer**:
-* **serializer.builder**:
+* **serializer**: A Serializer object constructed with all of parameters given.
+* **serializer.builder**: If all of the shortcuts provided are not sufficient, you can always get the SerializerBuilder
+object and add additional customizations before the Serializer object is constructed.
 
 Registering
 -----------
@@ -43,5 +45,41 @@ $app->register(new JDesrosiers\Silex\Provider\JmsSerializerServiceProvider(), ar
     "serializer.srcDir" => __DIR__ . "/vendor/jms/serializer/src",
 ));
 ```
+
 Usage
 -----
+The Serializer documentation can be found at http://jmsyst.com/libs/serializer.
+
+```php
+$app->get("/foo", function () use ($app) {
+    $foo = new Foo();
+    return $app["serializer"]->serialize($foo, "json");
+});
+```
+
+Using the Builder
+-----------------
+You can use the builder directly to add additional customizations
+
+```php
+$app->register(new JDesrosiers\Silex\Provider\JmsSerializerServiceProvider(), array(
+    "serializer.srcDir" => __DIR__ . "/vendor/jms/serializer/src",
+//    "serializer.namingStrategy" => "IdenticalProperty",
+));
+$app["serializer.builder"]->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy());
+```
+
+Adding Custom Handlers
+----------------------
+```php
+$app->register(new JDesrosiers\Silex\Provider\JmsSerializerServiceProvider(), array(
+    "serializer.srcDir" => __DIR__ . "/vendor/jms/serializer/src",
+    "serializer.configureHandlers" => function(JMS\Serializer\Handler\HandlerRegistry $registry) {
+        $registry->registerHandler('serialization', 'MyObject', 'json',
+            function($visitor, MyObject $obj, array $type) {
+                return $obj->getName();
+            }
+        );
+    },
+));
+```
