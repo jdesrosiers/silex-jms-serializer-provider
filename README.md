@@ -1,6 +1,8 @@
 silex-jms-serializer-provider
 ============================
 
+[![Build Status](https://travis-ci.org/jdesrosiers/silex-jms-serializer-provider.png?branch=master)](https://travis-ci.org/jdesrosiers/silex-jms-serializer-provider)
+
 [silex-jms-serializer-provider](https://github.com/jdesrosiers/silex-jms-serializer-provider) is a silex service provider
 that integrates [JmsSerializer](https://github.com/schmittjoh/serializer) into [silex](https://github.com/fabpot/Silex).
 
