@@ -29,8 +29,8 @@ Parameters
 * **serializer.namingStrategy**: (string) Set the PropertyNamingStrategy
 * **serializer.namingStrategy.separator**: (string) If CamelCase is chosen as the NamingStrategy, you can override the default separator.
 * **serializer.namingStrategy.lowerCase**: (boolean) If CamelCase is chosen as the NamingStrategy, you can override the lowerCase option.
-* **serializer.serializationVisitors**: (array<string:VisitorInterface>) Override the default serialization visitors.
-* **serializer.deserializationVisitors**: (array<string:VisitorInterface>) Override the default deserialization visitors.
+* **serializer.serializationVisitors**: (array\<string:VisitorInterface\>) Override the default serialization visitors.
+* **serializer.deserializationVisitors**: (array\<string:VisitorInterface\>) Override the default deserialization visitors.
 * **serializer.includeInterfaceMetadata**: (boolean) Whether to include the metadata from the interfaces
 * **serializer.metadataDirs**: (array<string:string>) Sets a map of namespace prefixes to directories.
 
