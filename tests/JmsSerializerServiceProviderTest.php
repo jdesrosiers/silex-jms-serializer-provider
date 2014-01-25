@@ -5,7 +5,7 @@ namespace JDesrosiers\Tests\Silex\Provider;
 use JDesrosiers\Silex\Provider\JmsSerializerServiceProvider;
 use Silex\Application;
 
-require_once __DIR__ . "/../../../../../vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 class JmsSerializerServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class JmsSerializerServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->app = new Application();
         $this->app->register(new JmsSerializerServiceProvider(), array(
-            "serializer.srcDir" => __DIR__ . "/../../../../../vendor/jms/serializer/src",
+            "serializer.srcDir" => __DIR__ . "/../vendor/jms/serializer/src",
         ));
     }
 
