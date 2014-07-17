@@ -1,6 +1,7 @@
 silex-jms-serializer-provider
 ============================
 
+[![Gittip](http://img.shields.io/gittip/jdesrosiers.svg)](https://www.gittip.com/jdesrosiers/)
 [![Build Status](https://travis-ci.org/jdesrosiers/silex-jms-serializer-provider.png?branch=master)](https://travis-ci.org/jdesrosiers/silex-jms-serializer-provider)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/jdesrosiers/silex-jms-serializer-provider/badges/quality-score.png?s=30b8cd0e1f6a2cb5bd36e9593c86a4bf77fca905)](https://scrutinizer-ci.com/g/jdesrosiers/silex-jms-serializer-provider/)
 [![Code Coverage](https://scrutinizer-ci.com/g/jdesrosiers/silex-jms-serializer-provider/badges/coverage.png?s=020eab2f4a91160daa47d31f56eb2c9031da2f51)](https://scrutinizer-ci.com/g/jdesrosiers/silex-jms-serializer-provider/)
