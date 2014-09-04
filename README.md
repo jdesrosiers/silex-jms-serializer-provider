@@ -26,8 +26,8 @@ Parameters
 * **serializer.srcDir**: (string) The path to the jms/serializer component.
 * **serializer.annotationReader**: (AnnotationReader) Set a custom AnnotationReader.
 * **serializer.cacheDir**: (string) Set a directory for caching annotations.
-* **serializer.configureHandlers**: (Closure) Customize handlers.
-* **serializer.configureListeners**: (Closure) Customize listeners.
+* **serializer.configureHandlers**: (Closure -- Protected via [Pimple::protect](https://github.com/fabpot/Pimple/blob/1.1/lib/Pimple.php#L142)) Customize handlers.
+* **serializer.configureListeners**: (Closure -- Protected via [Pimple::protect](https://github.com/fabpot/Pimple/blob/1.1/lib/Pimple.php#L142)) Customize listeners.
 * **serializer.objectConstructor**: (ObjectConstructorInterface) Set a custom ObjectConstructor.
 * **serializer.namingStrategy**: (string) Set the PropertyNamingStrategy
 * **serializer.namingStrategy.separator**: (string) If CamelCase is chosen as the NamingStrategy, you can override the default separator.
@@ -77,14 +77,17 @@ $app["serializer.builder"]->setPropertyNamingStrategy(new IdenticalPropertyNamin
 Adding Custom Handlers
 ----------------------
 ```php
-$app->register(new JDesrosiers\Silex\Provider\JmsSerializerServiceProvider(), array(
-    "serializer.srcDir" => __DIR__ . "/vendor/jms/serializer/src",
-    "serializer.configureHandlers" => function(JMS\Serializer\Handler\HandlerRegistry $registry) {
+$closure = Pimple::protect(
+    function(JMS\Serializer\Handler\HandlerRegistry $registry) {
         $registry->registerHandler('serialization', 'MyObject', 'json',
             function($visitor, MyObject $obj, array $type) {
                 return $obj->getName();
             }
         );
-    },
+    }
+);
+$app->register(new JDesrosiers\Silex\Provider\JmsSerializerServiceProvider(), array(
+    "serializer.srcDir" => __DIR__ . "/vendor/jms/serializer/src",
+    "serializer.configureHandlers" => $closure,
 ));
 ```
