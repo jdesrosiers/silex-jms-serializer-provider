@@ -26,8 +26,8 @@ Parameters
 * **serializer.srcDir**: (string) The path to the jms/serializer component.
 * **serializer.annotationReader**: (AnnotationReader) Set a custom AnnotationReader.
 * **serializer.cacheDir**: (string) Set a directory for caching annotations.
-* **serializer.configureHandlers**: (Closure -- Protected via [Pimple::protect](https://github.com/fabpot/Pimple/blob/1.1/lib/Pimple.php#L142)) Customize handlers.
-* **serializer.configureListeners**: (Closure -- Protected via [Pimple::protect](https://github.com/fabpot/Pimple/blob/1.1/lib/Pimple.php#L142)) Customize listeners.
+* **serializer.configureHandlers**: (Closure -- Protected via [Pimple::protect](https://github.com/fabpot/Pimple/blob/1.1/lib/Pimple.php#L142)) Override the default handlers.
+* **serializer.configureListeners**: (Closure -- Protected via [Pimple::protect](https://github.com/fabpot/Pimple/blob/1.1/lib/Pimple.php#L142)) Override the default listeners.
 * **serializer.objectConstructor**: (ObjectConstructorInterface) Set a custom ObjectConstructor.
 * **serializer.namingStrategy**: (string) Set the PropertyNamingStrategy
 * **serializer.namingStrategy.separator**: (string) If CamelCase is chosen as the NamingStrategy, you can override the default separator.
