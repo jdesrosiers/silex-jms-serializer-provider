@@ -24,7 +24,9 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-        AnnotationRegistry::registerAutoloadNamespace("JMS\Serializer\Annotation", $app["serializer.srcDir"]);
+        if ($app->offsetExists("serializer.srcDir")) {
+            AnnotationRegistry::registerAutoloadNamespace("JMS\Serializer\Annotation", $app["serializer.srcDir"]);
+        }
     }
 
     /**
