@@ -8,14 +8,16 @@ use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializerBuilder;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 /**
  * JMS Serializer integration for Silex.
  */
-class JmsSerializerServiceProvider implements ServiceProviderInterface
+class JmsSerializerServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
     /**
      * Register the jms/serializer annotations
@@ -30,81 +32,77 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Registet the serializer and serializer.builder services
+     * Register the serializer and serializer.builder services
      *
-     * @param Application $app
+     * @param Container $app
      *
      * @throws ServiceUnavailableHttpException
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app["serializer.namingStrategy.separator"] = null;
         $app["serializer.namingStrategy.lowerCase"] = null;
 
-        $app["serializer.builder"] = $app->share(
-            function () use ($app) {
-                $serializerBuilder = SerializerBuilder::create()->setDebug($app["debug"]);
+        $app["serializer.builder"] = function () use ($app) {
+            $serializerBuilder = SerializerBuilder::create()->setDebug($app["debug"]);
 
-                if ($app->offsetExists("serializer.annotationReader")) {
-                    $serializerBuilder->setAnnotationReader($app["serializer.annotationReader"]);
-                }
-
-                if ($app->offsetExists("serializer.cacheDir")) {
-                    $serializerBuilder->setCacheDir($app["serializer.cacheDir"]);
-                }
-
-                if ($app->offsetExists("serializer.configureHandlers")) {
-                    $serializerBuilder->configureHandlers($app["serializer.configureHandlers"]);
-                }
-
-                if ($app->offsetExists("serializer.configureListeners")) {
-                    $serializerBuilder->configureListeners($app["serializer.configureListeners"]);
-                }
-
-                if ($app->offsetExists("serializer.objectConstructor")) {
-                    $serializerBuilder->setObjectConstructor($app["serializer.objectConstructor"]);
-                }
-
-                if ($app->offsetExists("serializer.namingStrategy")) {
-                    $this->namingStrategy($app, $serializerBuilder);
-                }
-
-                if ($app->offsetExists("serializer.serializationVisitors")) {
-                    $this->setSerializationVisitors($app, $serializerBuilder);
-                }
-
-                if ($app->offsetExists("serializer.deserializationVisitors")) {
-                    $this->setDeserializationVisitors($app, $serializerBuilder);
-                }
-
-                if ($app->offsetExists("serializer.includeInterfaceMetadata")) {
-                    $serializerBuilder->includeInterfaceMetadata($app["serializer.includeInterfaceMetadata"]);
-                }
-
-                if ($app->offsetExists("serializer.metadataDirs")) {
-                    $serializerBuilder->setMetadataDirs($app["serializer.metadataDirs"]);
-                }
-
-                return $serializerBuilder;
+            if ($app->offsetExists("serializer.annotationReader")) {
+                $serializerBuilder->setAnnotationReader($app["serializer.annotationReader"]);
             }
-        );
 
-        $app["serializer"] = $app->share(
-            function () use ($app) {
-                return $app["serializer.builder"]->build();
+            if ($app->offsetExists("serializer.cacheDir")) {
+                $serializerBuilder->setCacheDir($app["serializer.cacheDir"]);
             }
-        );
+
+            if ($app->offsetExists("serializer.configureHandlers")) {
+                $serializerBuilder->configureHandlers($app["serializer.configureHandlers"]);
+            }
+
+            if ($app->offsetExists("serializer.configureListeners")) {
+                $serializerBuilder->configureListeners($app["serializer.configureListeners"]);
+            }
+
+            if ($app->offsetExists("serializer.objectConstructor")) {
+                $serializerBuilder->setObjectConstructor($app["serializer.objectConstructor"]);
+            }
+
+            if ($app->offsetExists("serializer.namingStrategy")) {
+                $this->namingStrategy($app, $serializerBuilder);
+            }
+
+            if ($app->offsetExists("serializer.serializationVisitors")) {
+                $this->setSerializationVisitors($app, $serializerBuilder);
+            }
+
+            if ($app->offsetExists("serializer.deserializationVisitors")) {
+                $this->setDeserializationVisitors($app, $serializerBuilder);
+            }
+
+            if ($app->offsetExists("serializer.includeInterfaceMetadata")) {
+                $serializerBuilder->includeInterfaceMetadata($app["serializer.includeInterfaceMetadata"]);
+            }
+
+            if ($app->offsetExists("serializer.metadataDirs")) {
+                $serializerBuilder->setMetadataDirs($app["serializer.metadataDirs"]);
+            }
+
+            return $serializerBuilder;
+        };
+
+        $app["serializer"] = function () use ($app) {
+            return $app["serializer.builder"]->build();
+        };
     }
 
     /**
      * Set the serialization naming strategy
      *
-     * @param Application $app
+     * @param Container $app
      * @param SerializerBuilder $serializerBuilder
      *
      * @throws ServiceUnavailableHttpException
      */
-    protected function namingStrategy(Application $app, SerializerBuilder $serializerBuilder)
+    protected function namingStrategy(Container $app, SerializerBuilder $serializerBuilder)
     {
         if ($app["serializer.namingStrategy"] instanceof PropertyNamingStrategyInterface) {
             $namingStrategy = $app["serializer.namingStrategy"];
@@ -136,10 +134,10 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
     /**
      * Override default serialization vistors
      *
-     * @param Application $app
+     * @param Container $app
      * @param SerializerBuilder $serializerBuilder
      */
-    protected function setSerializationVisitors(Application $app, SerializerBuilder $serializerBuilder)
+    protected function setSerializationVisitors(Container $app, SerializerBuilder $serializerBuilder)
     {
         $serializerBuilder->addDefaultSerializationVisitors();
 
@@ -151,10 +149,10 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
     /**
      * Override default deserialization visitors
      *
-     * @param Application $app
+     * @param Container $app
      * @param SerializerBuilder $serializerBuilder
      */
-    protected function setDeserializationVisitors(Application $app, SerializerBuilder $serializerBuilder)
+    protected function setDeserializationVisitors(Container $app, SerializerBuilder $serializerBuilder)
     {
         $serializerBuilder->addDefaultDeserializationVisitors();
 

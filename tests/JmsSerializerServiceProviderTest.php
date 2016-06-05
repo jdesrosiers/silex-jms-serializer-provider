@@ -5,8 +5,6 @@ namespace JDesrosiers\Tests\Silex\Provider;
 use JDesrosiers\Silex\Provider\JmsSerializerServiceProvider;
 use Silex\Application;
 
-require_once __DIR__ . "/../vendor/autoload.php";
-
 class JmsSerializerServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     protected $app;
