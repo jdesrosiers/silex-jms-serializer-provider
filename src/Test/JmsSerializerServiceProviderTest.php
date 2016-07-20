@@ -1,6 +1,6 @@
 <?php
 
-namespace JDesrosiers\Tests\Silex\Provider;
+namespace JDesrosiers\Tests\Silex\Provider\Test;
 
 use JDesrosiers\Silex\Provider\JmsSerializerServiceProvider;
 use Silex\Application;
